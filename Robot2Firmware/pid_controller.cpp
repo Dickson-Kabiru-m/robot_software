@@ -1,0 +1,66 @@
+#include "pid_controller.h"
+
+PIDController leftPID;
+PIDController rightPID;
+
+PIDController::PIDController()
+{
+    kp = 1.0;
+    ki = 0.0;
+    kd = 0.0;
+    target = 0;
+    integral = 0;
+    previousError = 0;
+    outputLimit = MOTOR_MAX_PWM; // Fixed: Matches config.h definition
+}
+
+void PIDController::setTarget(float value)
+{
+    target = value;
+}
+
+float PIDController::update(float measured)
+{
+    float error = target - measured;
+    integral += error;
+
+    /* Integral anti-windup */
+    if (integral > 100.0) integral = 100.0;
+    if (integral < -100.0) integral = -100.0;
+
+    float derivative = error - previousError;
+    float output = (kp * error) + (ki * integral) + (kd * derivative);
+    previousError = error;
+
+    if (output > outputLimit)  output = outputLimit;
+    if (output < -outputLimit) output = -outputLimit;
+
+    /* 
+      Motor deadband compensation
+      COMMENTED OUT FOR TESTING:
+      
+    if (output > 0.0 && output < (float)MOTOR_MIN_PWM)
+    {
+        output = (float)MOTOR_MIN_PWM;
+    }
+    if (output < 0.0 && output > -(float)MOTOR_MIN_PWM)
+    {
+        output = -(float)MOTOR_MIN_PWM;
+    }
+    */
+
+    return output;
+}
+
+void PIDController::reset()
+{
+    integral = 0;
+    previousError = 0;
+}
+
+void PIDController::setTunings(float p, float i, float d)
+{
+    kp = p;
+    ki = i;
+    kd = d;
+}
