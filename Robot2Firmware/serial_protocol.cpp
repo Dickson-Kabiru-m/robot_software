@@ -83,26 +83,23 @@ void processCommand(char command, float arg1, float arg2, float arg3)
 
         case 'r':
             encoders.reset();
-            // Optional/Debug commands can return OK if not called by the main loop
-            Serial.println("OK"); 
             break;
 
         case 'o':
             motorSetPWM((int)arg1, (int)arg2);
-            Serial.println("OK");
             break;
 
         case 'p':
             leftPID.setTunings(arg1, arg2, arg3);
             rightPID.setTunings(arg1, arg2, arg3);
-            Serial.println("OK");
+            // Serial.println("OK");
             break;
 
         case 's':
             motorSetPWM(0, 0);
             leftPID.reset();
             rightPID.reset();
-            Serial.println("OK");
+            //Serial.println("OK");
             break;
 
         default:
