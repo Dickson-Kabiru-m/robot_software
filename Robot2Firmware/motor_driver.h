@@ -22,7 +22,6 @@ void setRightMotor(
 #endif
 
 /*
-
 ******** LEFT DRIVER ********
  One L298 controls:
  Left Front Motor + Left Rear Motor
@@ -52,5 +51,4 @@ void setRightMotor(
 
  ******* GND SHARING *******
 Arduino GND + both L298 Motor driver GND + Encoder GND
-
 */

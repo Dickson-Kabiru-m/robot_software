@@ -39,8 +39,6 @@ void serialUpdate()
 
             char command = inputString.charAt(0);
             
-            // Crucial: Use floats for values! Josh's driver sends speeds 
-            // that parse much cleaner as floating-point target variables.
             float a1 = 0.0;
             float a2 = 0.0;
             float a3 = 0.0;
@@ -76,7 +74,7 @@ void processCommand(char command, float arg1, float arg2, float arg3)
 
         case 'm':
             // ROS sets target velocities. We pass them directly to the PID controllers.
-            // Crucial Fix: Removed the Serial.println("OK") statement!
+            // "OK" feedback text completely stripped out.
             leftPID.setTarget(arg1);
             rightPID.setTarget(arg2);
             break;
@@ -92,14 +90,12 @@ void processCommand(char command, float arg1, float arg2, float arg3)
         case 'p':
             leftPID.setTunings(arg1, arg2, arg3);
             rightPID.setTunings(arg1, arg2, arg3);
-            // Serial.println("OK");
             break;
 
         case 's':
             motorSetPWM(0, 0);
             leftPID.reset();
             rightPID.reset();
-            //Serial.println("OK");
             break;
 
         default:

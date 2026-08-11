@@ -11,7 +11,7 @@ PIDController::PIDController()
     target = 0;
     integral = 0;
     previousError = 0;
-    outputLimit = MOTOR_MAX_PWM; // Fixed: Matches config.h definition
+    outputLimit = MOTOR_MAX_PWM;
 }
 
 void PIDController::setTarget(float value)
@@ -34,20 +34,6 @@ float PIDController::update(float measured)
 
     if (output > outputLimit)  output = outputLimit;
     if (output < -outputLimit) output = -outputLimit;
-
-    /* 
-      Motor deadband compensation
-      COMMENTED OUT FOR TESTING:
-      
-    if (output > 0.0 && output < (float)MOTOR_MIN_PWM)
-    {
-        output = (float)MOTOR_MIN_PWM;
-    }
-    if (output < 0.0 && output > -(float)MOTOR_MIN_PWM)
-    {
-        output = -(float)MOTOR_MIN_PWM;
-    }
-    */
 
     return output;
 }

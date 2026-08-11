@@ -21,8 +21,6 @@ void motorBegin()
 /*
 ================================================
  LEFT SIDE CONTROL
- One L298 controls:
- Left Front Motor + Left Rear Motor
 ================================================
 */
 void setLeftMotor(int pwm)
@@ -55,8 +53,6 @@ void setLeftMotor(int pwm)
 /*
 ================================================
  RIGHT SIDE CONTROL
- One L298 controls:
- Right Front Motor + Right Rear Motor
 ================================================
 */
 void setRightMotor(int pwm)

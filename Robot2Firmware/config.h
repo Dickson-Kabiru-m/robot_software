@@ -28,7 +28,6 @@
 #define LEFT_ENCODER_A   2  // Must be pin 2 (Hardware Interrupt INT0)
 #define LEFT_ENCODER_B   4  // Digital pin
 
-
 #define RIGHT_ENCODER_A  3  // Must be pin 3 (Hardware Interrupt INT1)
 #define RIGHT_ENCODER_B  12 // Digital pin
 
