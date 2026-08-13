@@ -48,7 +48,8 @@ void setup()
     */
     watchdogReset();
 
-    Serial.println("Robot2 Firmware Ready");
+    // REMOVED: Serial.println("Robot2 Firmware Ready"); 
+    // This keeps the serial buffer 100% clean of text strings for ROS 2.
 }
 
 /*

@@ -19,7 +19,8 @@ void serialUpdate()
     {
         char c = Serial.read();
 
-        // Check for carriage return or newline to terminate the instruction
+        // FIX: Check for carriage return or newline BEFORE adding the character to the string!
+        // This stops white-spaces and hidden formatting keys from corrupting sscanf's float logic.
         if (c == '\r' || c == '\n')
         {
             if (inputString.length() > 0)
@@ -48,7 +49,7 @@ void serialUpdate()
             if (firstSpace != -1)
             {
                 String args = inputString.substring(firstSpace + 1);
-                // Parse arguments as floats to prevent truncating small speed increments
+                // Parse arguments safely as floats into local float variables
                 sscanf(args.c_str(), "%f %f %f", &a1, &a2, &a3);
             }
 
@@ -74,7 +75,6 @@ void processCommand(char command, float arg1, float arg2, float arg3)
 
         case 'm':
             // ROS sets target velocities. We pass them directly to the PID controllers.
-            // "OK" feedback text completely stripped out.
             leftPID.setTarget(arg1);
             rightPID.setTarget(arg2);
             break;
