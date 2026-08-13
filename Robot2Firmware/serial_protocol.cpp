@@ -19,8 +19,7 @@ void serialUpdate()
     {
         char c = Serial.read();
 
-        // FIX: Check for carriage return or newline BEFORE adding the character to the string!
-        // This stops white-spaces and hidden formatting keys from corrupting sscanf's float logic.
+        // Check for carriage return or newline to terminate the instruction
         if (c == '\r' || c == '\n')
         {
             if (inputString.length() > 0)
@@ -48,9 +47,22 @@ void serialUpdate()
 
             if (firstSpace != -1)
             {
-                String args = inputString.substring(firstSpace + 1);
-                // Parse arguments safely as floats into local float variables
-                sscanf(args.c_str(), "%f %f %f", &a1, &a2, &a3);
+                // Get the string containing only the arguments
+                String argsStr = inputString.substring(firstSpace + 1);
+                
+                // Convert to a standard C-string character pointer for sequential parsing
+                char* pEnd;
+                char* startPtr = (char*)argsStr.c_str();
+
+                // Extract each argument sequentially using strtod (String to Double/Float)
+                // This completely bypasses the broken Arduino Uno %f sscanf constraint.
+                a1 = strtod(startPtr, &pEnd);
+                if (startPtr != pEnd) {
+                    a2 = strtod(pEnd, &pEnd);
+                    if (pEnd != NULL) {
+                        a3 = strtod(pEnd, NULL);
+                    }
+                }
             }
 
             processCommand(command, a1, a2, a3);
@@ -67,7 +79,7 @@ void processCommand(char command, float arg1, float arg2, float arg3)
     {
         case 'e':
             // ROS asks for encoders. We return cumulative ticks separated by a space.
-            // NO "OK" text is permitted here.
+            // NO text confirmation is permitted here.
             Serial.print(encoders.getLeftTicks());
             Serial.print(" ");
             Serial.println(encoders.getRightTicks());
