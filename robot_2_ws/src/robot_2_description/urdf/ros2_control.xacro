@@ -75,68 +75,52 @@
         <!-- Encoder configuration -->
         <param name="encoder_ticks_per_rev">1980</param>
 
-        <!-- Arduino PID period -->
-        <param name="pid_period_ms">50</param>
+        <!--
+          Arduino PID period, in SECONDS.
+          on_init() reads a parameter named exactly "pid_period"
+          (see getNumericParameter calls in robot_2_system.cpp),
+          NOT "pid_period_ms". 0.05s = 50ms matches config.h's
+          PID_PERIOD.
+        -->
+        <param name="pid_period">0.05</param>
 
         <!-- Wheel geometry -->
         <param name="wheel_radius">0.0425</param>
 
       </hardware>
 
+      <!--
+        Joint order below MUST match the index assumption hard-coded
+        in Robot2System::write()/read():
+          0 = front_left, 1 = front_right, 2 = back_left, 3 = back_right
+      -->
 
-      <!-- ================================================== -->
-      <!-- LEFT FRONT                                         -->
-      <!-- ================================================== -->
-
+      <!-- LEFT FRONT (index 0) -->
       <joint name="front_left_wheel_joint">
-
         <command_interface name="velocity"/>
-
         <state_interface name="position"/>
         <state_interface name="velocity"/>
-
       </joint>
 
-
-      <!-- ================================================== -->
-      <!-- LEFT REAR                                          -->
-      <!-- ================================================== -->
-
-      <joint name="back_left_wheel_joint">
-
-        <command_interface name="velocity"/>
-
-        <state_interface name="position"/>
-        <state_interface name="velocity"/>
-
-      </joint>
-
-
-      <!-- ================================================== -->
-      <!-- RIGHT FRONT                                        -->
-      <!-- ================================================== -->
-
+      <!-- RIGHT FRONT (index 1) -->
       <joint name="front_right_wheel_joint">
-
         <command_interface name="velocity"/>
-
         <state_interface name="position"/>
         <state_interface name="velocity"/>
-
       </joint>
 
-
-      <!-- ================================================== -->
-      <!-- RIGHT REAR                                         -->
-      <!-- ================================================== -->
-
-      <joint name="back_right_wheel_joint">
-
+      <!-- LEFT REAR (index 2) -->
+      <joint name="back_left_wheel_joint">
         <command_interface name="velocity"/>
-
         <state_interface name="position"/>
         <state_interface name="velocity"/>
+      </joint>
 
+      <!-- RIGHT REAR (index 3) -->
+      <joint name="back_right_wheel_joint">
+        <command_interface name="velocity"/>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
       </joint>
 
     </ros2_control>
