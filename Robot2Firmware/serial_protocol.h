@@ -5,6 +5,6 @@
 
 void serialBegin();
 void serialUpdate();
-void processCommand(char command, long arg1, long arg2, long arg3);
+void processCommand(char command, float arg1, float arg2, float arg3);
 
 #endif

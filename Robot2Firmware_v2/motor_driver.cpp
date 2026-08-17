@@ -36,6 +36,17 @@ void setLeftMotor(int pwm)
     if (pwm > MOTOR_MAX_PWM)
         pwm = MOTOR_MAX_PWM;
 
+    /*
+      Deadband compensation.
+      Below MOTOR_MIN_PWM the motor draws current but does not
+      actually turn, which stalls the PID loop (it sees zero
+      ticks and keeps ramping error/integral). Any nonzero
+      command is bumped up to the measured minimum that actually
+      moves the wheels.
+    */
+    if (pwm > 0 && pwm < MOTOR_MIN_PWM)
+        pwm = MOTOR_MIN_PWM;
+
     if (reverse)
     {
         digitalWrite(LEFT_IN1, LOW);
@@ -67,6 +78,12 @@ void setRightMotor(int pwm)
 
     if (pwm > MOTOR_MAX_PWM)
         pwm = MOTOR_MAX_PWM;
+
+    /*
+      Deadband compensation - see setLeftMotor() above.
+    */
+    if (pwm > 0 && pwm < MOTOR_MIN_PWM)
+        pwm = MOTOR_MIN_PWM;
 
     if (reverse)
     {

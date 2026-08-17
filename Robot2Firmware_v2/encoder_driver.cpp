@@ -15,7 +15,7 @@ void leftEncoderISR()
 {
     int aState = digitalRead(LEFT_ENCODER_A);
     int bState = digitalRead(LEFT_ENCODER_B);
-    
+
     if (aState == bState)
     {
         EncoderDriver::leftCounter--;
@@ -35,7 +35,7 @@ void rightEncoderISR()
 {
     int aState = digitalRead(RIGHT_ENCODER_A);
     int bState = digitalRead(RIGHT_ENCODER_B);
-    
+
     if (aState == bState)
     {
         EncoderDriver::rightCounter++;

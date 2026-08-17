@@ -48,7 +48,7 @@ void setup()
     */
     watchdogReset();
 
-    // REMOVED: Serial.println("Robot2 Firmware Ready"); 
+    // REMOVED: Serial.println("Robot2 Firmware Ready");
     // This keeps the serial buffer 100% clean of text strings for ROS 2.
 }
 
@@ -66,8 +66,11 @@ void loop()
 
     /*
       PID update loop (20Hz)
+      Only runs in MODE_PID. In MODE_OPEN_LOOP, motorSetPWM()
+      was already called directly by the 'o' command handler,
+      so we must NOT overwrite it here every 50ms.
     */
-    if (millis() - lastPIDUpdate >= PID_PERIOD)
+    if (getControlMode() == MODE_PID && millis() - lastPIDUpdate >= PID_PERIOD)
     {
         lastPIDUpdate = millis();
 
@@ -94,7 +97,10 @@ void loop()
 
     /*
       Safety watchdog
-      If Raspberry Pi stops sending velocity commands, stop robot.
+      If Raspberry Pi stops sending motion commands ('m' or 'o'),
+      stop robot. Note: querying encoders ('e') does NOT reset this
+      timer, so a dead teleop link is caught even if odometry
+      polling keeps running.
     */
     if (watchdogExpired())
     {
