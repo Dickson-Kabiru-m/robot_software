@@ -1,4 +1,4 @@
-robot_2/controller_manager:
+/robot_2/controller_manager:
   ros__parameters:
     update_rate: 30
 
@@ -9,7 +9,7 @@ robot_2/controller_manager:
       type: joint_state_broadcaster/JointStateBroadcaster
 
 
-robot_2/diff_cont:
+/robot_2/diff_cont:
   ros__parameters:
 
     publish_rate: 50.0
@@ -52,4 +52,10 @@ robot_2/diff_cont:
 
     cmd_vel_timeout: 0.5
 
-    use_stamped_vel: false
+    # NOTE: use_stamped_vel is NOT set here on purpose.
+    # It was removed entirely from diff_drive_controller in ROS2
+    # Jazzy (present in Iron, gone by Jazzy) - setting it produces
+    # a "Failed to get parameters: use_stamped_vel" warning and
+    # does nothing. On Jazzy, ~/cmd_vel always expects
+    # geometry_msgs/msg/TwistStamped, unconditionally. Publish
+    # teleop with `-p stamped:=true` to match.
