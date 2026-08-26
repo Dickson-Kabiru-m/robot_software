@@ -14,7 +14,7 @@
 
     publish_rate: 50.0
 
-    base_frame_id: base_link
+    base_frame_id: robot_2/base_link
 
     left_wheel_names:
       - front_left_wheel_joint
@@ -28,7 +28,7 @@
 
     wheel_radius: 0.0425
 
-    odom_frame_id: odom
+    odom_frame_id: robot_2/odom
 
     pose_covariance_diagonal:
       - 0.001

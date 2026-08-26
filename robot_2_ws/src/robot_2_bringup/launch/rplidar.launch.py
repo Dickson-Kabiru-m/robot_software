@@ -15,6 +15,7 @@ def generate_launch_description():
             package='rplidar_ros',
             executable='rplidar_composition',
             name ='rplidar_node',
+            namespace = 'robot_2',
             output='screen',
             parameters=[{
                 'serial_port': LaunchConfiguration('serial_port'),
