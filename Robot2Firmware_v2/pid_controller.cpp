@@ -1,4 +1,5 @@
 #include "pid_controller.h"
+#include <math.h>
 
 PIDController leftPID;
 PIDController rightPID;
@@ -22,6 +23,26 @@ void PIDController::setTarget(float value)
 float PIDController::update(float measured)
 {
     float error = target - measured;
+
+    /*
+      Error deadzone.
+      Near a zero (or held) target, small encoder jitter/noise can
+      produce a tiny nonzero error every cycle. Without this, that
+      tiny PID output gets amplified by the motor driver's PWM
+      deadband compensation (MOTOR_MIN_PWM) into a real, audible
+      motor pulse - causing constant buzzing/chatter even when the
+      robot should be sitting still. Ignoring error below this
+      threshold keeps output at a clean 0 during genuine standstill,
+      without affecting responsiveness once a real move command
+      comes in (real error will be well above this threshold).
+    */
+    if (fabs(error) < 1.0)
+    {
+        integral = 0;
+        previousError = error;
+        return 0;
+    }
+
     integral += error;
 
     /* Integral anti-windup */

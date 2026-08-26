@@ -14,10 +14,12 @@ def generate_launch_description():
         Node(
             package='rplidar_ros',
             executable='rplidar_composition',
+            name ='rplidar_node',
             output='screen',
             parameters=[{
                 'serial_port': LaunchConfiguration('serial_port'),
-                'frame_id': 'laser_frame',
+                'serial_baudrate': 115200,
+                'frame_id': 'robot_2/laser_frame',
                 'angle_compensate': True,
                 'scan_mode': 'Standard'
             }]

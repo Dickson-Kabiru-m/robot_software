@@ -78,6 +78,7 @@ def generate_launch_description():
                     sim_mode,
                     value_type=bool
                 ),
+		"frame_prefix":"robot_2/",
             }
         ],
 
@@ -95,7 +96,7 @@ def generate_launch_description():
         name="controller_manager",
 
         parameters=[
-            controllers_file
+            controllers_file,
         ],
 
         output="screen"
